@@ -1,0 +1,417 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>College-Media</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'assets/css/bootstrap.min.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'assets/css/font-awesome.css' %}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/templatemo-hexashop.css' %}"
+    />
+
+    <link rel="stylesheet" href="{% static 'assets/css/owl-carousel.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <style>
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 0.1rem;
+            margin-top: 0.1rem;
+        }
+
+        @media (max-width: 767px) {
+          .main-banner{
+             padding-top: 118px;
+          }
+.col{width: 100%;
+    padding: 0;
+    margin: 0;}
+              
+        }
+
+       
+    </style>
+  </head>
+
+  <body>
+    <header class="header-area header-sticky">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <a href="index.html" class="logo">
+                <img
+                  src="{% static 'images/cmlogo.png' %}"
+                  style="width: 195px; height: 95px"
+                />
+              </a>
+
+              <ul class="nav">
+                <li class="scroll-to-section">
+                  <a href="#top" class="active">Home</a>
+                </li>
+                <li class="scroll-to-section"><a href="#women">About</a></li>
+                <li class="scroll-to-section"><a href="#kids">Contact</a></li>
+                <li class="scroll-to-section"><a href="login">Login</a></li>
+              </ul>
+              <a class="menu-trigger">
+                <span>Menu</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-banner" id="top">
+      <div class="container-fluid" style="padding: 0;">
+        {% if images %}
+        <!--content-->
+        <div class="container">
+          <div class="image-grid">
+            {% for img in images|slice:":3" %}
+
+            <div class="col">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <a href="{% url 'profile' user_id=img.student.id %}"
+                    ><img
+                      src="{{ img.student.profile_img.url }}"
+                      class="profile-pic"
+                      alt="{{ img.student.first_name }}" /></a
+                  ><strong> {{ img.student.first_name }}</strong> {% comment %}
+                  <h5 class="card-title"></h5>
+                  {% endcomment %}
+                </div>
+                <div class="image-container">
+                  <img
+                    class="card-img-top img"
+                    src="{{ img.image.url }}"
+                    alt="{{ post.title }}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal{{ img.id }}"
+                  />
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{ img.student.classname }}</h5>
+                
+                  <p class="card-text">{{ img.imagename }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal{{ img.id }}"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      {{ img.imagename }}
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="image-container">
+                      <img
+                        src="{{ img.image.url }}"
+                        class="img-fluid img"
+                        alt="{{ img.imagename }}"
+                      />
+                    </div>
+                    <p style="word-wrap: break-word; padding-top: 5%">
+                      {{img.imagecaption}}
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% else %} No one has Uploaded a Post..! {% endif %}
+      </div>
+    </div>
+
+    <section class="section" id="men">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="section-heading">
+              <h2>Recent Post's</h2>
+              <span>Look what the college has to show for you...!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="men-item-carousel">
+              <div class="owl-men-item owl-carousel">
+                {% for image in images|slice:"3:" %}
+
+                <div class="item">
+                  <div class="thumb">
+                    <img src="{{image.image.url}}" alt="" />
+                  </div>
+                  <div class="down-content">
+                    <h4>{{image.student.first_name}}</h4>
+                    <span>{{image.student.classname}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="women">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="section-heading">
+              <h2>About Us</h2>
+              <span
+                >CollegeMedia is the site where you can view daily updates of
+                our college.This is the platform where staffs and students
+                upload posts. They can also view, and like posts shared by their
+                friends,staff on CollegeMedia. You must be the staff or student
+                then only you can login using College-ID and password.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kids">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="section-heading">
+              <h2>Contact</h2>
+              <span
+                >Contact us to have your own CollegeMedia for your collge</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="subscribe">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="section-heading"></div>
+                <form id="subscribe" action="" method="get">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <fieldset>
+                        <input
+                          name="name"
+                          type="text"
+                          id="name"
+                          placeholder="Your Name"
+                          required=""
+                        />
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-5">
+                      <fieldset>
+                        <input
+                          name="email"
+                          type="text"
+                          id="email"
+                          pattern="[^ @]*@[^ @]*"
+                          placeholder="Your Email Address"
+                          required=""
+                        />
+                      </fieldset>
+                    </div>
+                    <br />
+                    <br /><br />
+                    <div class="col-lg-10">
+                      <fieldset>
+                        <input
+                          name="message"
+                          type="text"
+                          id="email"
+                          placeholder="Your Message"
+                          required=""
+                        />
+                      </fieldset>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-lg-2">
+                      <fieldset>
+                        <button
+                          type="submit"
+                          id="form-submit"
+                          class="main-dark-button"
+                        >
+                          <i class="fa fa-paper-plane"></i>
+                        </button>
+                      </fieldset>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-4">
+                <div class="row">
+                  <div class="col-6">
+                    <ul>
+                      <li>Phone:<br /><span>9164018439</span></li>
+                      <li>Office Location:<br /><span>BBHC</span></li>
+                    </ul>
+                  </div>
+                  <div class="col-6">
+                    <ul>
+                      <li>Email:<br /><span>collegemedia87@gmail.com</span></li>
+                      <li>
+                        Social Media:<br /><span>
+                          <a href="https://www.instagram.com/shriram___naik/"
+                            >Instagram</a
+                          >,
+                          <a
+                            href="https://www.linkedin.com/in/shriram-naik-5b7781259"
+                            >Linkedin</a
+                          ></span
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="first-item">
+              <div class="logo">
+                <img src="{% static 'images/cmlogo.png' %}" alt="" />
+              </div>
+              <ul>
+                <li><a href="#">collegemedia87@gmail.com</a></li>
+                <li><a href="#">9164018439</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <div class="under-footer">
+              <a href="https://www.bbhegdecollege.com"
+                ><p>
+                  <strong style="text-decoration: underline"
+                    >Dr. B. B. Hegde First Grade College Kundapura</strong
+                  >
+                </p></a
+              >
+              <br />
+              <p>
+                Project Guide: <strong>Vinutha</strong> <br />
+                Asst. Prof. Computer Science
+              </p>
+              <br />
+              <p>
+                Backend Developer: <strong>Shriram Naik</strong> <br />
+                Frontend Developer: <strong>Vaishnavi</strong> <br />
+                Documentation: <strong>Darshit</strong> <br />
+              </p>
+              <br /><br />
+              <p>Copyright © 2023 CollegeMedia.</p>
+              {% comment %}
+              <h5 style="color: white">
+                Lazy Developers Vaishnavi and Team....!
+              </h5>
+              {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{% static 'assets/js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> {% endcomment %}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </body>
+  </body>
+</html>

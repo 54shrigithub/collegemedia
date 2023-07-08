@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <title>Login</title>
+        <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'signin.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <div class="box">
+        <div class="inner-box">
+          <div class="forms-wrap">
+            <form
+              action=""
+              method="post"
+              autocomplete="off"
+              class="sign-in-form"
+            >
+              {% csrf_token %}
+              <div class="logo">
+                <img src="{% static 'images/cmlogo.png' %}" alt="CollegeMedia" />
+                <h4>CollegeMedia</h4>
+              </div>
+
+
+                    {% if messages %} {% for message in messages %}
+      <div
+        {%
+        if
+        message.tags
+        %}
+        class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert"
+        {%
+        endif
+        %}
+      >
+        <strong>{{ message }}</strong>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %} {% endif %}
+
+              <div class="heading">
+                <h2>Welcome Back!!!</h2>
+              </div>
+
+              <div class="actual-form">
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    class="input-field"
+                    autocomplete="off"
+                    name="username"
+                    required
+                  />
+                  <label>CollegeID</label>
+                  <div class="i">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+
+                <div class="input-wrap">
+                  <input
+                    type="password"
+                    class="input-field"
+                    autocomplete="off"
+                    name="password"
+                    required
+                  />
+                  <label>Password</label>
+                  <div class="i">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                </div>
+
+                <div class="input-wrap">
+                  <input type="checkbox" name="rem"> Remeber me ...</input>
+                  
+                  {% comment %} <div class="i">
+                    <i class="fas fa-lock"></i>
+                  </div> {% endcomment %}
+                </div>
+
+                <input type="submit" value="Sign In" class="sign-btn" />
+
+                <p class="text">
+                  Forgotten your password or your login details?
+                  <a href="forget">Get help</a> signing in
+                </p>
+              </div>
+            </form>
+          </div>
+
+          <div class="carousel">
+            <div class="images-wrapper">
+              <img
+                src="/IMG-20230430-WA0051.jpg"
+                class="image img-1 show"
+                alt=""
+              />
+              <img src="/img1.jpg" class="image img-2" alt="" />
+              <img src="/img4 (2).jpg" class="image img-3" alt="" />
+            </div>
+
+            <div class="text-slider">
+              <div class="text-wrap">
+                <div class="text-group">
+                  <h2>Choose your own courses</h2>
+                  <h2>Customize as you like</h2>
+                  <h2>Invite students to your class</h2>
+                </div>
+              </div>
+
+              <div class="bullets">
+                <span class="active" data-value="1"></span>
+                <span data-value="2"></span>
+                <span data-value="3"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Javascript file -->
+
+    <script src="{% static 'signin.js' %}"></script>
+
+    {% if page %}
+    <script>
+      window.location.replace("/{{page}}");
+    </script>
+    {% endif %}
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

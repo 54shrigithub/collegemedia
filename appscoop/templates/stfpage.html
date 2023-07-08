@@ -1,0 +1,591 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+
+    .thumbs-up {
+    color: gray;
+    cursor: pointer;
+  }
+  .clicked {
+    color: red;
+    cursor: pointer;
+  }
+      .icon-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: inherit;
+      }
+      .icon-button:focus {
+        outline: none;
+      }
+
+  .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 0.1rem;
+            margin-top: 0.1rem;
+        }
+
+
+      .icon-button:hover {
+        text-decoration: underline;
+      }
+      .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 0px;
+        padding-bottom: 4%;
+      }
+      .image-grid .image-container {
+        position: relative;
+        width: 100%;
+        height: 200%;
+        padding-bottom: 66.66%; /* 2:3 aspect ratio (3/2 * 100) */
+      }
+      .image-grid .img {
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+      }
+      .fixed-bottom-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+      }
+      .fixed-top-container {
+        position: fixed;
+        top: 0;
+        width: 80%;
+        background-color: #e6aeea;
+        margin: 0% 10%;
+        height: 8%;
+      }
+      .rounded-circle {
+        border-radius: 50%;
+        width: 80px;
+        height: 65px;
+        margin-top: 15px;
+      }
+      .dropdown-menu-right {
+        right: 0;
+        left: auto;
+      }
+      .navbar {
+        background-color: #f8f9fa;
+        {% comment %} padding: 10px; {% endcomment %}
+        position: relative; /* Add this line */
+        padding:0px;
+      }
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+      }
+      .navbar-brand img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .dropdown-menu {
+        min-width: 160px;
+      }
+      .dropdown-container {
+        position: relative;
+      }
+      .dropdown-menu {
+        position: absolute;
+        left: 0;
+        z-index: 1000; /* Set an appropriate z-index value */
+        margin-left: -60%;
+      }
+
+      .nav-link {
+    display: block;
+    padding: 0px;
+}
+
+
+      @media (max-width: 767px) {
+        .image-grid {
+          gap: 0px;
+        }
+        .navbar {
+          position: static;
+        }
+        .dropdown-container {
+          position: relative;
+          margin-left: 75%;
+          margin-top: -15%;
+        }
+        .dropdown-menu {
+          position: absolute;
+          left: 0;
+          right: 0; /* Set both left and right to 0 */
+          z-index: 1000;
+          float: none;
+          width: 100%;
+          margin-left: -75%;
+          z-index: 1000;
+        }
+        .more {
+          width: 100%; /* Set the width to 100% to fill the available space */
+          text-align: left; /* Adjust the text alignment */
+        }
+        .fixed-bottom-container {
+          padding-right: 15px;
+          padding-left: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--header-->
+    <!--header-->
+    <nav class="navbar" id="nabvar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="nav-link" href="viewprofile"><img class='profile-pic' src="{{request.user.profile_img.url}}" alt="Profile Image" /></a>
+          
+          <span>{{request.user.first_name}}</span>
+        </div>
+        <div class="dropdown-container">
+          <button
+            class="btn btn-secondary dropdown-toggle more"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            More
+          </button>
+          <div
+            class="dropdown-menu dropdown-menu-right"
+            aria-labelledby="dropdownMenuButton"
+          >
+            <a class="dropdown-item" href="addstudenttoclasstab">Add Student</a>
+            <a class="dropdown-item" href="accept">Accept Post</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+      <div id='msg'></div>
+    
+      {% if messages %} {% for message in messages %}
+      <div
+        {%
+        if
+        message.tags
+        %}
+        class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert"
+        {%
+        endif
+        %}
+      >
+        <strong>{{ message }}</strong>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %} {% endif %}
+
+
+ <!--content-->
+
+    <div class="container" style="padding-top: 5px">
+    <div class="image-grid">
+        {% for img in images %}
+
+        <div class="col">
+          <div class="card mb-4">
+            <div class="card-header">
+                  <a href="{% url 'profile' user_id=img.student.id %}"><img src="{{ img.student.profile_img.url }}" class="profile-pic" alt="{{ img.student.first_name }}"></a><Strong> {{ img.student.first_name }}</Strong>
+                  {% comment %} <h5 class="card-title"></h5> {% endcomment %}
+            </div>
+            <div class="image-container">
+                <img
+                    class="card-img-top img"
+                    src="{{ img.image.url }}"
+                    alt="{{ post.title }}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal{{ img.id }}"
+                />
+            </div>
+            <div class="card-body">
+                    <h5 class="card-title">{{ img.student.classname }}</h5>
+                    {% comment %} <h6 class="card-text">{{ img.student.first_name }}</h6> {% endcomment %}
+                    <p class="card-text">{{ img.imagename }}</p>
+            </div>
+            <div class="card-footer">
+                    <i class="fas fa-thumbs-up {% if request.user in img.likes.all %} clicked {%else%} thumbs-up {% endif %}" onclick="toggleLike({{img.id}})" id="likeBtn-{{ img.id }}"></i>
+                    <span id="likes-{{ img.id }}">{{ img.likes.count }}</span>
+            </div>
+          </div>
+        </div>
+
+            <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{ img.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ img.imagename }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="image-container">
+                  <img src="{{ img.image.url }}" class="img-fluid img" alt="{{ img.imagename }}" >
+                </div>
+                <p style="word-wrap: break-word; padding-top:5%">{{img.imagecaption}}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+
+
+    
+
+
+    <!-- footer -->
+
+    <div class="fixed-bottom-container">
+      <div class="container">
+        <div class="row">
+          <div class="col-3 text-center">
+            <a href="#nabvar"> <i class="fas fa-home"></i></a>
+          </div>
+          <div class="col-3 text-center">
+            <a href="search"><i class="fas fa-search"></i></a>
+          </div>
+          <div class="col-3 text-center">
+            <button
+              class="icon-button"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#myModal"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div> 
+          <div class="col-3 text-center">
+            <button
+              class="icon-button"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#myInbox"
+            >
+            <i class="fas fa-inbox"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The post Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h4 class="modal-title">Send Post Request</h4>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal">X</button>
+      </div>
+
+      <div class="modal-body">
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_token" value="{{ form_token }}">
+          Title:
+          <input type="textarea" name="imagename" id="imagename" maxlength="10" required ><br><br>
+          Select your Image:
+          {% comment %} <input type="file" name="image" id="image" accept="image/*" required onchange="previewImage(event)" /> {% endcomment %}
+          <input type="file" name="image" id="image" accept="image/*" required onchange="validateAndPreviewImage(event)" />
+          <br /> <br/>
+          <img id="imagePreview" src="#" alt="Image Preview" style="
+              max-width: 40%;
+              max-height: 60%;
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              display:none
+          " />
+          <br>
+          <label for="imgcaption">Caption:</label>
+          <textarea name="imgcaption" id="imgcaption" cols="40" rows="2"></textarea><br><br>
+          {% if request.user.is_staff %}
+          Cross check before Posting anything!!
+          {% else %}
+          The post would be sent to your class mentor. When the class mentor accepts it, your post would be made visible to others.
+          {% endif %}
+          
+      </div>
+
+      <div class="modal-footer">
+        {% if request.user.is_staff %}
+        <input type="submit" value="College Post" name="clg_btn" class="btn btn-info" />
+        <input type="submit" value="Public Post" name="pub_btn" class="btn btn-info" />
+        {% else %}
+        <input type="submit" value="Send Request to Post" name="post_btn" class="btn btn-info" />
+        {% endif %}
+      </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- inbox modal -->
+        <div
+          class="modal fade"
+          id="myInbox"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Inbox</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  X
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>From</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody">
+                    {% for msg in inbox %}
+                    <tr>
+                      <td>
+                        {{ msg.sender.first_name }} <br />
+                        <font size="1">{{ msg.date }}</font>
+                      </td>
+                      <td>
+                        <strong>{{ msg.title }} </strong><br />{{ msg.message }}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#newmail"
+                >
+                  New
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- new mail modal -->
+
+        <div
+          class="modal fade"
+          id="newmail"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Mail</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  X
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form>
+                  {% csrf_token %} Title:<input
+                    type="text"
+                    name="title"
+                    id="title" style="margin-left: 9%;"
+                  />
+                  <br><br>
+                  Message:<textarea
+                    name="msg"
+                    id="msg"
+                    cols="25"
+                    rows="2" style="margin-left: 2%;"
+                  ></textarea>
+                </form>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  onclick="sendmsg()"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+    <!-- Scripts -->
+   
+
+
+<script>
+ function validateAndPreviewImage(event) {
+  var input = event.target;
+  var file = input.files[0];
+  var maxSizeInBytes = 1 * 1024 * 1024; // Maximum size in bytes (1MB)
+
+  if (file.size > maxSizeInBytes) {
+    alert("File size exceeds the maximum allowed size of 1MB.");
+    input.value = ""; // Reset the file input
+    return;
+  }
+
+  previewImage(input);
+}
+
+function previewImage(input) {
+  var preview = document.getElementById('imagePreview');
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block'; // Show the preview image
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+  const csrfToken = "{{ csrf_token }}";
+
+  function toggleLike(postId) {
+    var url = 'toggle-like-post/' + postId + '/';
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('X-CSRFToken', csrfToken);
+    xhr.onload = function () {
+      var data = JSON.parse(xhr.responseText);
+      var likeBtn = document.getElementById('likeBtn-' + postId);
+      var likes = document.getElementById('likes-' + postId);
+      likes.innerHTML = data.likes;
+      if (data.is_liked) {
+        likeBtn.classList.add('clicked');
+        likeBtn.classList.remove('thumbs-up');
+      } else {
+        likeBtn.classList.add('thumbs-up');
+        likeBtn.classList.remove('clicked');
+      }
+      likes.innerHTML = data.likes;
+    };
+    xhr.send();
+  }
+
+   function sendmsg() {
+        var title = document.getElementById("title");
+        var titlevalue = title.value;
+        var msg = document.getElementById("msg");
+        var msgvalue = msg.value;
+        var url = "newmail/" + titlevalue + "/" + msgvalue + "/";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+        xhr.onload = function () {
+          var data = JSON.parse(xhr.responseText);
+          var mails = document.getElementById("tbody");
+          mails.innerHTML = data.newmail;
+          console.log("hi");
+          mssg=document.getElementById('msg')
+          mssg.innerHTML = "<div class='alert alert-success alert-dismissible fade show'role='alert'><strong>New mail sent</strong><button type='button' class='close' data-dismiss='alert' aria-label='Close' ><span aria-hidden='true'>&times;</span></button></div>"
+        };
+        xhr.send();
+        
+      }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+
+

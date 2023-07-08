@@ -1,0 +1,43 @@
+from django.urls import path
+from .views import *
+
+
+urlpatterns = [
+    path('',index,name='index'),
+    path('login/',logins,name='login'),
+    path('logout/',logouts,name='logout'),
+    path('student/',student,name='student'),
+    path('adminn/',adminn,name='adminn'),
+    path('adminn/addstafftoclasstab',addstafftoclasstab,name='addstafftoclasstab'),
+    path('staff/',staff,name='staff'),
+    path('staff/addstudenttoclasstab',addstudenttoclasstab,name='addstudenttoclasstab'),
+    # path('staff/logout',logouts,name='logout'),
+    path('login/forget',forgetpass,name='forgetpass'),
+    # path('student/logout',logouts,name='logout'),
+    # path('adminn/logout',logouts,name='logout'), 
+    path('staff/accept',postaccept,name='postaccept'),
+    path('adminn/accept',adminpostaccept,name='adminpostaccept'),
+    path('adminn/pub',pubpost,name='viewpublicpost'),
+    path('student/toggle-like-post/<int:post_id>/', toggle_like_post, name='toggle_like_post'),
+    path('staff/toggle-like-post/<int:post_id>/', toggle_like_post, name='toggle_like_post'),
+    path('adminn/toggle-like-post/<int:post_id>/', toggle_like_post, name='toggle_like_post'),
+    path('adminn/newmail/<str:title>/<str:msg>/', newmail, name='new_mail'),
+    path('staff/newmail/<str:title>/<str:msg>/', newmail, name='new_mail'),
+    path('student/viewprofile',viewprofile,name='viewprofile'),
+    path('adminn/viewprofile',viewprofile,name='viewprofile'),
+    path('student/pending',pending,name='pending'),
+    path('staff/viewprofile',viewprofile,name='viewprofile'),
+    path('update_profile/',update_profile,name='update_profile'),
+    path('student/search',search,name='search'),
+    path('staff/search',search,name='search'),
+    path('adminn/search',search,name='search'),
+    path('adminn/studview',studview,name='studview'),
+    path('profile/<int:user_id>/',profile_view, name='profile'),
+    path('profile/<int:user_id>/toggle-like-post/<int:post_id>/',ref_toggle_like_post, name='ref_toggle_like_post'),
+    path('delet/<int:pstid>/',delpost, name='delpost'),
+    path('pubdelet/<int:pstid>/',pubdelpost, name='pubdelpost'),
+    path('pdelet/<int:pstid>/<int:pid>',pdelpost, name='pdelpost'),
+    # path('signin/',signin, name='ref_toggle_like_post'),
+    path('deleti/<int:iid>/',delinbox, name='delinbox'),
+]
+
